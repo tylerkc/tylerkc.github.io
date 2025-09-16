@@ -296,4 +296,325 @@ function scrollToPrevSection() {
             break;
         }
     }
+}// Cus
+tom sticky image effect for About section
+function handleStickyImage() {
+    const aboutSection = document.querySelector('.about');
+    const aboutImage = document.querySelector('.about-image');
+    
+    if (!aboutSection || !aboutImage) return;
+    
+    const sectionRect = aboutSection.getBoundingClientRect();
+    const sectionTop = sectionRect.top;
+    const sectionBottom = sectionRect.bottom;
+    const navbarHeight = 100;
+    
+    // Check if section is in viewport
+    if (sectionTop <= navbarHeight && sectionBottom > navbarHeight + 400) {
+        // Make image fixed when section is scrolling
+        aboutImage.style.position = 'fixed';
+        aboutImage.style.top = navbarHeight + 'px';
+        aboutImage.style.left = '50%';
+        aboutImage.style.transform = 'translateX(-50%)';
+        aboutImage.style.zIndex = '10';
+    } else {
+        // Reset to normal positioning
+        aboutImage.style.position = 'relative';
+        aboutImage.style.top = 'auto';
+        aboutImage.style.left = 'auto';
+        aboutImage.style.transform = 'none';
+        aboutImage.style.zIndex = '1';
+    }
 }
+
+// Run on scroll
+window.addEventListener('scroll', handleStickyImage);
+window.addEventListener('resize', handleStickyImage);
+
+// Run on page load
+window.addEventListener('load', handleStickyImage);// Adv
+anced Interactive Effects
+
+// 1. Enhanced Parallax scrolling
+function initParallax() {
+    const parallaxElements = document.querySelectorAll('.parallax-element');
+    const bgElements = document.querySelectorAll('.bg-element');
+    
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        
+        // Tech grid parallax
+        parallaxElements.forEach(element => {
+            const rate = scrolled * -0.3;
+            element.style.transform = `translateY(${rate}px)`;
+        });
+        
+        // Background elements parallax
+        bgElements.forEach((element, index) => {
+            const rate = scrolled * (0.1 + index * 0.05);
+            element.style.transform = `translateY(${rate}px) rotate(${scrolled * 0.02}deg)`;
+        });
+        
+        // Hero content parallax
+        const heroContent = document.querySelector('.hero-content');
+        if (heroContent) {
+            const rate = scrolled * 0.1;
+            heroContent.style.transform = `translateY(${rate}px)`;
+        }
+    });
+}
+
+// 2. Interactive cursor effect
+function initCustomCursor() {
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    document.body.appendChild(cursor);
+    
+    const cursorDot = document.createElement('div');
+    cursorDot.className = 'cursor-dot';
+    document.body.appendChild(cursorDot);
+    
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+    });
+    
+    function animateCursor() {
+        cursorX += (mouseX - cursorX) * 0.1;
+        cursorY += (mouseY - cursorY) * 0.1;
+        
+        cursor.style.left = cursorX + 'px';
+        cursor.style.top = cursorY + 'px';
+        
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+    
+    // Cursor interactions
+    const interactiveElements = document.querySelectorAll('a, button, .btn, .project-card, .skill-badge');
+    
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('cursor-hover');
+            cursorDot.classList.add('cursor-hover');
+        });
+        
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('cursor-hover');
+            cursorDot.classList.remove('cursor-hover');
+        });
+    });
+}
+
+// 3. Magnetic effect for buttons
+function initMagneticEffect() {
+    const magneticElements = document.querySelectorAll('.btn, .contact-btn, .project-link');
+    
+    magneticElements.forEach(element => {
+        element.addEventListener('mousemove', (e) => {
+            const rect = element.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            element.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            element.style.transform = 'translate(0px, 0px)';
+        });
+    });
+}
+
+// 4. Scroll-triggered animations with Intersection Observer
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements for animation
+    document.querySelectorAll('.project-card, .skill-category, .timeline-item, .stat').forEach(el => {
+        observer.observe(el);
+    });
+}
+
+// 5. Enhanced floating elements animation
+function initFloatingElements() {
+    const hero = document.querySelector('.hero');
+    
+    // Create floating particles
+    for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'floating-particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 10 + 's';
+        particle.style.animationDuration = (Math.random() * 8 + 12) + 's';
+        hero.appendChild(particle);
+    }
+    
+    // Add mouse movement effect to hero
+    hero.addEventListener('mousemove', (e) => {
+        const rect = hero.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        
+        const heroContent = document.querySelector('.hero-content');
+        if (heroContent) {
+            const moveX = (x - 0.5) * 20;
+            const moveY = (y - 0.5) * 20;
+            heroContent.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        }
+    });
+    
+    hero.addEventListener('mouseleave', () => {
+        const heroContent = document.querySelector('.hero-content');
+        if (heroContent) {
+            heroContent.style.transform = 'translate(0px, 0px)';
+        }
+    });
+}
+
+// 6. Text reveal animation
+function initTextReveal() {
+    const textElements = document.querySelectorAll('.hero-name, .hero-title, .section-title');
+    
+    textElements.forEach(element => {
+        const text = element.textContent;
+        element.innerHTML = '';
+        
+        [...text].forEach((char, i) => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.style.animationDelay = i * 0.05 + 's';
+            span.classList.add('char-reveal');
+            element.appendChild(span);
+        });
+    });
+}
+
+// 7. Smooth section transitions
+function initSectionTransitions() {
+    const sections = document.querySelectorAll('section');
+    
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('section-active');
+                
+                // Update navbar active state
+                const id = entry.target.getAttribute('id');
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    sections.forEach(section => {
+        sectionObserver.observe(section);
+    });
+}
+
+// Initialize all effects with error handling
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Initializing interactive effects...');
+    
+    try {
+        initParallax();
+        console.log('Parallax initialized');
+    } catch (e) {
+        console.error('Parallax error:', e);
+    }
+    
+    try {
+        initCustomCursor();
+        console.log('Custom cursor initialized');
+    } catch (e) {
+        console.error('Cursor error:', e);
+    }
+    
+    try {
+        initMagneticEffect();
+        console.log('Magnetic effect initialized');
+    } catch (e) {
+        console.error('Magnetic error:', e);
+    }
+    
+    try {
+        initScrollAnimations();
+        console.log('Scroll animations initialized');
+    } catch (e) {
+        console.error('Scroll animations error:', e);
+    }
+    
+    try {
+        initFloatingElements();
+        console.log('Floating elements initialized');
+    } catch (e) {
+        console.error('Floating elements error:', e);
+    }
+    
+    try {
+        initTextReveal();
+        console.log('Text reveal initialized');
+    } catch (e) {
+        console.error('Text reveal error:', e);
+    }
+    
+    try {
+        initSectionTransitions();
+        console.log('Section transitions initialized');
+    } catch (e) {
+        console.error('Section transitions error:', e);
+    }
+    
+    console.log('All effects initialized!');
+});// 
+Simple test animation to verify JavaScript is working
+function testAnimation() {
+    console.log('Testing animations...');
+    
+    // Add a simple pulsing effect to the hero title
+    const heroTitle = document.querySelector('.hero-name');
+    if (heroTitle) {
+        heroTitle.style.animation = 'pulse 2s ease-in-out infinite';
+        console.log('Hero title animation added');
+    }
+    
+    // Add hover effect to project cards
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach((card, index) => {
+        card.style.transition = 'all 0.3s ease';
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-10px) scale(1.05)';
+            card.style.boxShadow = '0 20px 40px rgba(0, 122, 255, 0.3)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0) scale(1)';
+            card.style.boxShadow = '';
+        });
+        console.log(`Project card ${index + 1} hover effect added`);
+    });
+}
+
+// Run test animation immediately
+document.addEventListener('DOMContentLoaded', () => {
+    testAnimation();
+});
